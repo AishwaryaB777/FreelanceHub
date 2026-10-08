@@ -1,0 +1,463 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MVC_ProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="CId" />
+          </Key>
+          <Property Name="CId" Type="int" Nullable="false" />
+          <Property Name="CName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CPhone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CAddress" Type="nvarchar" MaxLength="50" />
+          <Property Name="CCompany_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CC_Description" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="CPhoto" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="CStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Freelancer">
+          <Key>
+            <PropertyRef Name="FId" />
+          </Key>
+          <Property Name="FId" Type="int" Nullable="false" />
+          <Property Name="FName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FAge" Type="int" Nullable="false" />
+          <Property Name="FPhone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FQualification" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="FExp" Type="int" Nullable="false" />
+          <Property Name="FSkills" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="FPhoto" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="FResume" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="FStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="LId" />
+          </Key>
+          <Property Name="LId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegId" Type="int" Nullable="false" />
+          <Property Name="LUsername" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LPassword" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LRole" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="PId" />
+          </Key>
+          <Property Name="PId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CId" Type="int" Nullable="false" />
+          <Property Name="PTitle" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PDescription" Type="nvarchar" MaxLength="1250" Nullable="false" />
+          <Property Name="PSkill" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="PBudget" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PExperiance" Type="int" Nullable="false" />
+          <Property Name="PQualification" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="PLocation" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PAdd" Type="date" Nullable="false" />
+          <Property Name="PEnd" Type="date" Nullable="false" />
+          <Property Name="PType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project_Application">
+          <Key>
+            <PropertyRef Name="A_Id" />
+          </Key>
+          <Property Name="A_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FId" Type="int" Nullable="false" />
+          <Property Name="PId" Type="int" Nullable="false" />
+          <Property Name="ADate" Type="date" Nullable="false" />
+          <Property Name="AProposal" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AExpected_Amount" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AResume" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="AStatus" Type="int" Nullable="false" />
+        </EntityType>
+        <Function Name="sp_Client_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CId" Type="int" Mode="In" />
+          <Parameter Name="CName" Type="nvarchar" Mode="In" />
+          <Parameter Name="CPhone" Type="nvarchar" Mode="In" />
+          <Parameter Name="CEmail" Type="nvarchar" Mode="In" />
+          <Parameter Name="CAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="CCompany_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="CC_Description" Type="nvarchar" Mode="In" />
+          <Parameter Name="CPhoto" Type="nvarchar" Mode="In" />
+          <Parameter Name="CStatus" Type="nvarchar" Mode="In" />
+          <Parameter Name="OStatus" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="sp_Freelancer_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FId" Type="int" Mode="In" />
+          <Parameter Name="FName" Type="nvarchar" Mode="In" />
+          <Parameter Name="FAge" Type="int" Mode="In" />
+          <Parameter Name="FPhone" Type="nvarchar" Mode="In" />
+          <Parameter Name="FEmail" Type="nvarchar" Mode="In" />
+          <Parameter Name="FAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="FQualification" Type="nvarchar" Mode="In" />
+          <Parameter Name="FExp" Type="int" Mode="In" />
+          <Parameter Name="FSkills" Type="nvarchar" Mode="In" />
+          <Parameter Name="FPhoto" Type="nvarchar" Mode="In" />
+          <Parameter Name="FResume" Type="nvarchar" Mode="In" />
+          <Parameter Name="FStatus" Type="nvarchar" Mode="In" />
+          <Parameter Name="OStatus" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="sp_Get_Login_Id" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="una" Type="nvarchar" Mode="In" />
+          <Parameter Name="pw" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_Login_GetMax_Id" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_Login_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="una" Type="nvarchar" Mode="In" />
+          <Parameter Name="pw" Type="nvarchar" Mode="In" />
+          <Parameter Name="ro" Type="nvarchar" Mode="In" />
+          <Parameter Name="sta" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_LoginCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="una" Type="nvarchar" Mode="In" />
+          <Parameter Name="pw" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_LoginRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="una" Type="nvarchar" Mode="In" />
+          <Parameter Name="pw" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_Project_Application_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FId" Type="int" Mode="In" />
+          <Parameter Name="PId" Type="int" Mode="In" />
+          <Parameter Name="ADate" Type="date" Mode="In" />
+          <Parameter Name="AProposal" Type="nvarchar" Mode="In" />
+          <Parameter Name="AExpected_Amount" Type="nvarchar" Mode="In" />
+          <Parameter Name="AResume" Type="nvarchar" Mode="In" />
+          <Parameter Name="AStatus" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_Project_GetOpen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_Project_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CId" Type="int" Mode="In" />
+          <Parameter Name="PTitle" Type="nvarchar" Mode="In" />
+          <Parameter Name="PDescription" Type="nvarchar" Mode="In" />
+          <Parameter Name="PSkill" Type="nvarchar" Mode="In" />
+          <Parameter Name="PBudget" Type="nvarchar" Mode="In" />
+          <Parameter Name="PExperiance" Type="int" Mode="In" />
+          <Parameter Name="PQualification" Type="nvarchar" Mode="In" />
+          <Parameter Name="PLocation" Type="nvarchar" Mode="In" />
+          <Parameter Name="PAdd" Type="date" Mode="In" />
+          <Parameter Name="PEnd" Type="date" Mode="In" />
+          <Parameter Name="PType" Type="nvarchar" Mode="In" />
+          <Parameter Name="PStatus" Type="nvarchar" Mode="In" />
+          <Parameter Name="OStatus" Type="int" Mode="InOut" />
+        </Function>
+        <EntityContainer Name="MVC_ProjectModelStoreContainer">
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Freelancer" EntityType="Self.Freelancer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project_Application" EntityType="Self.Project_Application" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MVC_ProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="CId" />
+          </Key>
+          <Property Name="CId" Type="Int32" Nullable="false" />
+          <Property Name="CName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CCompany_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CC_Description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CPhoto" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Freelancer">
+          <Key>
+            <PropertyRef Name="FId" />
+          </Key>
+          <Property Name="FId" Type="Int32" Nullable="false" />
+          <Property Name="FName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FAge" Type="Int32" Nullable="false" />
+          <Property Name="FPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FQualification" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FExp" Type="Int32" Nullable="false" />
+          <Property Name="FSkills" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FPhoto" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FResume" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="LId" />
+          </Key>
+          <Property Name="LId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RegId" Type="Int32" Nullable="false" />
+          <Property Name="LUsername" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LRole" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="PId" />
+          </Key>
+          <Property Name="PId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CId" Type="Int32" Nullable="false" />
+          <Property Name="PTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PDescription" Type="String" MaxLength="1250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PSkill" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PBudget" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PExperiance" Type="Int32" Nullable="false" />
+          <Property Name="PQualification" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PAdd" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PEnd" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project_Application">
+          <Key>
+            <PropertyRef Name="A_Id" />
+          </Key>
+          <Property Name="A_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FId" Type="Int32" Nullable="false" />
+          <Property Name="PId" Type="Int32" Nullable="false" />
+          <Property Name="ADate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="AProposal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AExpected_Amount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AResume" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AStatus" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="MVC_ProjectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="Freelancers" EntityType="Self.Freelancer" />
+          <EntitySet Name="Logins" EntityType="Self.Login" />
+          <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="Project_Application" EntityType="Self.Project_Application" />
+          <FunctionImport Name="sp_Client_Insert">
+            <Parameter Name="CId" Mode="In" Type="Int32" />
+            <Parameter Name="CName" Mode="In" Type="String" />
+            <Parameter Name="CPhone" Mode="In" Type="String" />
+            <Parameter Name="CEmail" Mode="In" Type="String" />
+            <Parameter Name="CAddress" Mode="In" Type="String" />
+            <Parameter Name="CCompany_Name" Mode="In" Type="String" />
+            <Parameter Name="CC_Description" Mode="In" Type="String" />
+            <Parameter Name="CPhoto" Mode="In" Type="String" />
+            <Parameter Name="CStatus" Mode="In" Type="String" />
+            <Parameter Name="OStatus" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_Freelancer_Insert">
+            <Parameter Name="FId" Mode="In" Type="Int32" />
+            <Parameter Name="FName" Mode="In" Type="String" />
+            <Parameter Name="FAge" Mode="In" Type="Int32" />
+            <Parameter Name="FPhone" Mode="In" Type="String" />
+            <Parameter Name="FEmail" Mode="In" Type="String" />
+            <Parameter Name="FAddress" Mode="In" Type="String" />
+            <Parameter Name="FQualification" Mode="In" Type="String" />
+            <Parameter Name="FExp" Mode="In" Type="Int32" />
+            <Parameter Name="FSkills" Mode="In" Type="String" />
+            <Parameter Name="FPhoto" Mode="In" Type="String" />
+            <Parameter Name="FResume" Mode="In" Type="String" />
+            <Parameter Name="FStatus" Mode="In" Type="String" />
+            <Parameter Name="OStatus" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_Get_Login_Id" ReturnType="Collection(Int32)">
+            <Parameter Name="una" Mode="In" Type="String" />
+            <Parameter Name="pw" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_Login_GetMax_Id" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="sp_Login_Insert">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="una" Mode="In" Type="String" />
+            <Parameter Name="pw" Mode="In" Type="String" />
+            <Parameter Name="ro" Mode="In" Type="String" />
+            <Parameter Name="sta" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_LoginCount" ReturnType="Collection(Int32)">
+            <Parameter Name="una" Mode="In" Type="String" />
+            <Parameter Name="pw" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_LoginRole" ReturnType="Collection(String)">
+            <Parameter Name="una" Mode="In" Type="String" />
+            <Parameter Name="pw" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_Project_Application_Insert">
+            <Parameter Name="FId" Mode="In" Type="Int32" />
+            <Parameter Name="PId" Mode="In" Type="Int32" />
+            <Parameter Name="ADate" Mode="In" Type="DateTime" />
+            <Parameter Name="AProposal" Mode="In" Type="String" />
+            <Parameter Name="AExpected_Amount" Mode="In" Type="String" />
+            <Parameter Name="AResume" Mode="In" Type="String" />
+            <Parameter Name="AStatus" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_Project_GetOpen" ReturnType="Collection(MVC_ProjectModel.sp_Project_GetOpen_Result)" />
+          <FunctionImport Name="sp_Project_Insert">
+            <Parameter Name="CId" Mode="In" Type="Int32" />
+            <Parameter Name="PTitle" Mode="In" Type="String" />
+            <Parameter Name="PDescription" Mode="In" Type="String" />
+            <Parameter Name="PSkill" Mode="In" Type="String" />
+            <Parameter Name="PBudget" Mode="In" Type="String" />
+            <Parameter Name="PExperiance" Mode="In" Type="Int32" />
+            <Parameter Name="PQualification" Mode="In" Type="String" />
+            <Parameter Name="PLocation" Mode="In" Type="String" />
+            <Parameter Name="PAdd" Mode="In" Type="DateTime" />
+            <Parameter Name="PEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="PType" Mode="In" Type="String" />
+            <Parameter Name="PStatus" Mode="In" Type="String" />
+            <Parameter Name="OStatus" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_Project_GetOpen_Result">
+          <Property Type="Int32" Name="PId" Nullable="false" />
+          <Property Type="String" Name="PTitle" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="PDescription" Nullable="false" MaxLength="1250" />
+          <Property Type="String" Name="PSkill" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="PBudget" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="PExperiance" Nullable="false" />
+          <Property Type="String" Name="PLocation" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="PAdd" Nullable="false" />
+          <Property Type="DateTime" Name="PEnd" Nullable="false" />
+          <Property Type="String" Name="PType" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CCompany_Name" Nullable="false" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MVC_ProjectModelStoreContainer" CdmEntityContainer="MVC_ProjectEntities">
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="MVC_ProjectModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="CId" ColumnName="CId" />
+                <ScalarProperty Name="CName" ColumnName="CName" />
+                <ScalarProperty Name="CPhone" ColumnName="CPhone" />
+                <ScalarProperty Name="CEmail" ColumnName="CEmail" />
+                <ScalarProperty Name="CAddress" ColumnName="CAddress" />
+                <ScalarProperty Name="CCompany_Name" ColumnName="CCompany_Name" />
+                <ScalarProperty Name="CC_Description" ColumnName="CC_Description" />
+                <ScalarProperty Name="CPhoto" ColumnName="CPhoto" />
+                <ScalarProperty Name="CStatus" ColumnName="CStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Freelancers">
+            <EntityTypeMapping TypeName="MVC_ProjectModel.Freelancer">
+              <MappingFragment StoreEntitySet="Freelancer">
+                <ScalarProperty Name="FId" ColumnName="FId" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="FAge" ColumnName="FAge" />
+                <ScalarProperty Name="FPhone" ColumnName="FPhone" />
+                <ScalarProperty Name="FEmail" ColumnName="FEmail" />
+                <ScalarProperty Name="FAddress" ColumnName="FAddress" />
+                <ScalarProperty Name="FQualification" ColumnName="FQualification" />
+                <ScalarProperty Name="FExp" ColumnName="FExp" />
+                <ScalarProperty Name="FSkills" ColumnName="FSkills" />
+                <ScalarProperty Name="FPhoto" ColumnName="FPhoto" />
+                <ScalarProperty Name="FResume" ColumnName="FResume" />
+                <ScalarProperty Name="FStatus" ColumnName="FStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="MVC_ProjectModel.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="LId" ColumnName="LId" />
+                <ScalarProperty Name="RegId" ColumnName="RegId" />
+                <ScalarProperty Name="LUsername" ColumnName="LUsername" />
+                <ScalarProperty Name="LPassword" ColumnName="LPassword" />
+                <ScalarProperty Name="LRole" ColumnName="LRole" />
+                <ScalarProperty Name="LStatus" ColumnName="LStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="MVC_ProjectModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="PId" ColumnName="PId" />
+                <ScalarProperty Name="CId" ColumnName="CId" />
+                <ScalarProperty Name="PTitle" ColumnName="PTitle" />
+                <ScalarProperty Name="PDescription" ColumnName="PDescription" />
+                <ScalarProperty Name="PSkill" ColumnName="PSkill" />
+                <ScalarProperty Name="PBudget" ColumnName="PBudget" />
+                <ScalarProperty Name="PExperiance" ColumnName="PExperiance" />
+                <ScalarProperty Name="PQualification" ColumnName="PQualification" />
+                <ScalarProperty Name="PLocation" ColumnName="PLocation" />
+                <ScalarProperty Name="PAdd" ColumnName="PAdd" />
+                <ScalarProperty Name="PEnd" ColumnName="PEnd" />
+                <ScalarProperty Name="PType" ColumnName="PType" />
+                <ScalarProperty Name="PStatus" ColumnName="PStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Project_Application">
+            <EntityTypeMapping TypeName="MVC_ProjectModel.Project_Application">
+              <MappingFragment StoreEntitySet="Project_Application">
+                <ScalarProperty Name="A_Id" ColumnName="A_Id" />
+                <ScalarProperty Name="FId" ColumnName="FId" />
+                <ScalarProperty Name="PId" ColumnName="PId" />
+                <ScalarProperty Name="ADate" ColumnName="ADate" />
+                <ScalarProperty Name="AProposal" ColumnName="AProposal" />
+                <ScalarProperty Name="AExpected_Amount" ColumnName="AExpected_Amount" />
+                <ScalarProperty Name="AResume" ColumnName="AResume" />
+                <ScalarProperty Name="AStatus" ColumnName="AStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_Client_Insert" FunctionName="MVC_ProjectModel.Store.sp_Client_Insert" />
+          <FunctionImportMapping FunctionImportName="sp_Freelancer_Insert" FunctionName="MVC_ProjectModel.Store.sp_Freelancer_Insert" />
+          <FunctionImportMapping FunctionImportName="sp_Get_Login_Id" FunctionName="MVC_ProjectModel.Store.sp_Get_Login_Id" />
+          <FunctionImportMapping FunctionImportName="sp_Login_GetMax_Id" FunctionName="MVC_ProjectModel.Store.sp_Login_GetMax_Id" />
+          <FunctionImportMapping FunctionImportName="sp_Login_Insert" FunctionName="MVC_ProjectModel.Store.sp_Login_Insert" />
+          <FunctionImportMapping FunctionImportName="sp_LoginCount" FunctionName="MVC_ProjectModel.Store.sp_LoginCount" />
+          <FunctionImportMapping FunctionImportName="sp_LoginRole" FunctionName="MVC_ProjectModel.Store.sp_LoginRole" />
+          <FunctionImportMapping FunctionImportName="sp_Project_Application_Insert" FunctionName="MVC_ProjectModel.Store.sp_Project_Application_Insert" />
+          <FunctionImportMapping FunctionImportName="sp_Project_GetOpen" FunctionName="MVC_ProjectModel.Store.sp_Project_GetOpen">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MVC_ProjectModel.sp_Project_GetOpen_Result">
+                <ScalarProperty Name="PId" ColumnName="PId" />
+                <ScalarProperty Name="PTitle" ColumnName="PTitle" />
+                <ScalarProperty Name="PDescription" ColumnName="PDescription" />
+                <ScalarProperty Name="PSkill" ColumnName="PSkill" />
+                <ScalarProperty Name="PBudget" ColumnName="PBudget" />
+                <ScalarProperty Name="PExperiance" ColumnName="PExperiance" />
+                <ScalarProperty Name="PLocation" ColumnName="PLocation" />
+                <ScalarProperty Name="PAdd" ColumnName="PAdd" />
+                <ScalarProperty Name="PEnd" ColumnName="PEnd" />
+                <ScalarProperty Name="PType" ColumnName="PType" />
+                <ScalarProperty Name="CCompany_Name" ColumnName="CCompany_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_Project_Insert" FunctionName="MVC_ProjectModel.Store.sp_Project_Insert" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
