@@ -13,6 +13,6 @@ namespace MVC_Project_Freelance.Models
         public string AProposal { get; set; }
         public string AExpected_Amount { get; set; }
         public string AResume { get; set; }
-        public int AStatus { get; set; }
+        public string AStatus { get; set; }
     }
 }

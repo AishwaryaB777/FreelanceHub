@@ -1,4 +1,4 @@
-﻿@model List<MVC_Project_Freelance.Models.sp_Project_GetOpen_Result>
+﻿@model List<MVC_Project_Freelance.Models.ProjectSearch>
 
 @{
     ViewBag.Title = "Freelancer Home";
@@ -17,7 +17,6 @@
         height: 100%;
         margin: 0;
         padding: 0;
-        /* IMPORTANT */
         overflow: hidden;
     }
 
@@ -27,7 +26,6 @@
         background: radial-gradient( circle at 12% 18%, rgba(212, 20, 20, 0.10), transparent 40% ), radial-gradient( circle at 88% 85%, rgba(255, 140, 0, 0.12), transparent 40% ), linear-gradient( 135deg, #fff5f3, #ffe9e4 55%, #fff8f0 );
         padding: 25px 20px;
         box-sizing: border-box;
-        /* IMPORTANT */
         overflow: hidden;
     }
 
@@ -65,7 +63,6 @@
         justify-content: space-between;
         align-items: center;
         gap: 20px;
-        /* Do not allow banner to shrink */
         flex-shrink: 0;
     }
 
@@ -153,13 +150,10 @@
         padding: 22px 25px 18px;
         box-shadow: 0 20px 45px rgba(160, 20, 20, 0.14), 0 4px 14px rgba(160, 20, 20, 0.08);
         border-top: 4px solid #c11212;
-        /* Take remaining viewport height */
         flex: 1;
-        /* VERY IMPORTANT */
         min-height: 0;
         display: flex;
         flex-direction: column;
-        /* Do NOT let card create page scroll */
         overflow: hidden;
         box-sizing: border-box;
     }
@@ -209,7 +203,7 @@
 
 
     /* =========================================================
-       SEARCH BAR AREA
+       SEARCH FORM
        ========================================================= */
 
     .filter-area {
@@ -219,7 +213,6 @@
         gap: 10px;
         margin-top: 10px;
         margin-bottom: 15px;
-        /* Search bars never scroll */
         flex-shrink: 0;
     }
 
@@ -246,18 +239,77 @@
 
 
     /* =========================================================
+       SEARCH BUTTON
+       ========================================================= */
+
+    .search-button {
+        height: 38px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient( 135deg, #a80d0d, #d41414 );
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 3px 8px rgba(168, 13, 13, 0.12);
+    }
+
+
+        .search-button:hover {
+            background: linear-gradient( 135deg, #7d0505, #b30c0c );
+            transform: translateY(-1px);
+            box-shadow: 0 5px 12px rgba(168, 13, 13, 0.25);
+        }
+
+
+    /* =========================================================
+       RESET BUTTON
+       ========================================================= */
+
+    .reset-button {
+        height: 38px;
+        border: 1px solid #e6c5be;
+        border-radius: 8px;
+        background: #fff7f5;
+        color: #8f0808;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+
+        .reset-button:hover {
+            background: #fff0ed;
+            color: #a80d0d;
+            text-decoration: none;
+        }
+
+
+    /* =========================================================
+       SEARCH ACTION AREA
+       ========================================================= */
+
+    .search-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+
+    /* =========================================================
        TABLE SCROLL CONTAINER
        ========================================================= */
 
     .table-wrap {
         width: 100%;
-        /* IMPORTANT:
-           Takes all remaining card space */
         flex: 1;
         min-height: 0;
-        /* ONLY THIS AREA SCROLLS */
         overflow-y: auto;
-        /* Never horizontal scroll */
         overflow-x: hidden;
         border-radius: 10px;
         border: 1px solid #f6dcd6;
@@ -296,7 +348,6 @@
                 text-transform: uppercase;
                 padding: 10px 8px;
                 white-space: nowrap;
-                /* Header stays visible */
                 position: sticky;
                 top: 0;
                 z-index: 10;
@@ -509,8 +560,7 @@
 
 
     /* =========================================================
-       CUSTOM VERTICAL SCROLLBAR
-       ONLY TABLE
+       CUSTOM SCROLLBAR
        ========================================================= */
 
     .table-wrap::-webkit-scrollbar {
@@ -585,10 +635,6 @@
 
 
     @@media (max-width: 850px) {
-        /*
-           Page STILL does not scroll.
-           Only table scrolls.
-        */
 
         html,
         body {
@@ -634,6 +680,11 @@
         }
 
 
+        .search-actions {
+            grid-template-columns: 1fr;
+        }
+
+
         .search-box {
             width: 100%;
         }
@@ -670,8 +721,8 @@
                 </h1>
 
                 <p>
-                    Browse the latest projects posted by clients and find
-                    the work that fits your skills.
+                    Browse the latest projects posted by clients and
+                    find the work that matches your skills.
                 </p>
 
             </div>
@@ -694,7 +745,9 @@
         <div class="projects-card">
 
 
-            <!-- CARD HEADER -->
+            <!-- =================================================
+                 CARD HEADER
+                 ================================================= -->
 
             <div class="card-top">
 
@@ -712,7 +765,7 @@
 
 
                     <p>
-                        Open projects posted by clients.
+                        Search and explore projects posted by clients.
                     </p>
 
                 </div>
@@ -720,12 +773,82 @@
             </div>
 
 
-            @if (!Model.Any())
-            {
+            <!-- =================================================
+                 SEARCH FORM
+                 ================================================= -->
 
-                <!-- =================================================
-                     EMPTY STATE
-                     ================================================= -->
+            <form method="post"
+                  action="@Url.Action("searchproject_click", "FreelancerHome")">
+
+                <div class="filter-area">
+
+
+                    <!-- SKILL -->
+
+                    <input type="text"
+                           name="PSkill"
+                           class="search-box"
+                           placeholder="🔧 Search Skill..."
+                           value="@Request["PSkill"]" />
+
+
+                    <!-- PROJECT TYPE -->
+
+                    <input type="text"
+                           name="PType"
+                           class="search-box"
+                           placeholder="📁 Project Type..."
+                           value="@Request["PType"]" />
+
+
+                    <!-- BUDGET -->
+
+                    <input type="text"
+                           name="PBudget"
+                           class="search-box"
+                           placeholder="💰 Budget..."
+                           value="@Request["PBudget"]" />
+
+
+                    <!-- EXPERIENCE -->
+
+                    <input type="number"
+                           name="PExperiance"
+                           class="search-box"
+                           placeholder="🎓 Max Experience..."
+                           value="@Request["PExperiance"]" />
+
+                </div>
+
+
+                <div class="search-actions">
+
+                    <button type="submit"
+                            class="search-button">
+
+                        🔍 Search Projects
+
+                    </button>
+
+
+                    <a href="@Url.Action("FreelancerHomePage", "FreelancerHome")"
+                       class="reset-button">
+
+                        ↻ Reset
+
+                    </a>
+
+                </div>
+
+            </form>
+
+
+            <!-- =================================================
+                 EMPTY STATE
+                 ================================================= -->
+
+            @if (Model == null || !Model.Any())
+            {
 
                 <div class="empty-state">
 
@@ -733,8 +856,11 @@
                         📭
                     </div>
 
-                    No projects have been posted yet.
-                    Please check back soon.
+                    No projects found.
+
+                    <br />
+
+                    Try changing your search filters or check back later.
 
                 </div>
 
@@ -743,39 +869,7 @@
             {
 
                 <!-- =================================================
-                     SEARCH BARS
-                     ================================================= -->
-
-                <div class="filter-area">
-
-                    <input type="text"
-                           id="skillSearch"
-                           class="search-box"
-                           placeholder="🔧 Search Skill..." />
-
-
-                    <input type="text"
-                           id="typeSearch"
-                           class="search-box"
-                           placeholder="📁 Project Type..." />
-
-
-                    <input type="number"
-                           id="budgetSearch"
-                           class="search-box"
-                           placeholder="💰 Max Budget..." />
-
-
-                    <input type="number"
-                           id="experienceSearch"
-                           class="search-box"
-                           placeholder="🎓 Max Experience..." />
-
-                </div>
-
-
-                <!-- =================================================
-                     TABLE SCROLL AREA
+                     TABLE
                      ================================================= -->
 
                 <div class="table-wrap">
@@ -839,29 +933,37 @@
                             @foreach (var p in Model)
                             {
 
-                                var exp =
-                                    Convert.ToInt32(p.PExperiance);
+                                int exp = 0;
+
+                                if (p.PExperiance != null)
+                                {
+                                    exp = Convert.ToInt32(p.PExperiance);
+                                }
 
 
-                                var startDate =
-                                    Convert.ToDateTime(p.PAdd)
-                                    .ToString("dd MMM yyyy");
+                                string endDate = "";
 
-
-                                var endDate =
-                                    Convert.ToDateTime(p.PEnd)
-                                    .ToString("dd MMM yyyy");
+                                if (p.PEnd != null)
+                                {
+                                    endDate =
+                                        Convert.ToDateTime(p.PEnd)
+                                        .ToString("dd MMM yyyy");
+                                }
 
 
                                 <tr>
 
 
-                                    <!-- PROJECT -->
+                                    <!-- =================================
+                                         PROJECT
+                                         ================================= -->
 
                                     <td>
 
                                         <div class="p-title">
+
                                             @p.PTitle
+
                                         </div>
 
 
@@ -877,7 +979,9 @@
                                     </td>
 
 
-                                    <!-- COMPANY -->
+                                    <!-- =================================
+                                         COMPANY
+                                         ================================= -->
 
                                     <td class="company">
 
@@ -886,7 +990,9 @@
                                     </td>
 
 
-                                    <!-- TYPE -->
+                                    <!-- =================================
+                                         PROJECT TYPE
+                                         ================================= -->
 
                                     <td>
 
@@ -899,7 +1005,9 @@
                                     </td>
 
 
-                                    <!-- SKILLS -->
+                                    <!-- =================================
+                                         SKILLS
+                                         ================================= -->
 
                                     <td class="skill-text">
 
@@ -908,7 +1016,9 @@
                                     </td>
 
 
-                                    <!-- BUDGET -->
+                                    <!-- =================================
+                                         BUDGET
+                                         ================================= -->
 
                                     <td class="budget">
 
@@ -917,7 +1027,9 @@
                                     </td>
 
 
-                                    <!-- EXPERIENCE -->
+                                    <!-- =================================
+                                         EXPERIENCE
+                                         ================================= -->
 
                                     <td class="nowrap">
 
@@ -928,7 +1040,9 @@
                                     </td>
 
 
-                                    <!-- LOCATION -->
+                                    <!-- =================================
+                                         LOCATION
+                                         ================================= -->
 
                                     <td>
 
@@ -937,38 +1051,27 @@
                                     </td>
 
 
-                                    <!-- DURATION -->
+                                    <!-- =================================
+                                         END DATE
+                                         ================================= -->
 
                                     <td class="nowrap">
 
-                                        @startDate
-
-                                        <br />
-
-                                        <span class="date-to">
-
-                                            to @endDate
-
-                                        </span>
+                                        @endDate
 
                                     </td>
 
 
-                                    <!-- APPLY -->
+                                    <!-- =================================
+                                         APPLY
+                                         ================================= -->
 
                                     <td>
 
-                                        <a href="@Url.Action(
-                                            "Apply",
-                                            "ApplyProject",
-                                            new { id = p.PId }
-                                        )"
+                                        <a href="@Url.Action("ApplicationPage","ApplyProject",new { pid = p.PId })"
                                            class="apply-btn">
-
                                             Apply
-
                                         </a>
-
                                     </td>
 
 

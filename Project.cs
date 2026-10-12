@@ -7,13 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MVC_Project_Freelance.Models
+namespace MVC_Project_Freelance
 {
     using System;
     using System.Collections.Generic;
     
     public partial class Project
     {
+        public int PId { get; set; }
         public int CId { get; set; }
         public string PTitle { get; set; }
         public string PDescription { get; set; }

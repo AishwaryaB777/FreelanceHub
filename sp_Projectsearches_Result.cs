@@ -7,14 +7,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MVC_Project_Freelance.Models
+namespace MVC_Project_Freelance
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Client
+    public partial class sp_Projectsearches_Result
     {
+        public int PId { get; set; }
         public int CId { get; set; }
+        public string PTitle { get; set; }
+        public string PDescription { get; set; }
+        public string PSkill { get; set; }
+        public string PBudget { get; set; }
+        public int PExperiance { get; set; }
+        public string PQualification { get; set; }
+        public string PLocation { get; set; }
+        public System.DateTime PAdd { get; set; }
+        public System.DateTime PEnd { get; set; }
+        public string PType { get; set; }
+        public string PStatus { get; set; }
+        public int Client_CId { get; set; }
         public string CName { get; set; }
         public string CPhone { get; set; }
         public string CEmail { get; set; }

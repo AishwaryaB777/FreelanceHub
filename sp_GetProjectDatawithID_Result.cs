@@ -7,22 +7,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MVC_Project_Freelance.Models
+namespace MVC_Project_Freelance
 {
     using System;
     
-    public partial class sp_Project_GetOpen_Result
+    public partial class sp_GetProjectDatawithID_Result
     {
         public int PId { get; set; }
+        public int CId { get; set; }
         public string PTitle { get; set; }
         public string PDescription { get; set; }
         public string PSkill { get; set; }
         public string PBudget { get; set; }
         public int PExperiance { get; set; }
+        public string PQualification { get; set; }
         public string PLocation { get; set; }
         public System.DateTime PAdd { get; set; }
         public System.DateTime PEnd { get; set; }
         public string PType { get; set; }
-        public string CCompany_Name { get; set; }
+        public string PStatus { get; set; }
     }
 }

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MVC_Project_Freelance.Models
+namespace MVC_Project_Freelance
 {
     using System;
     using System.Collections.Generic;

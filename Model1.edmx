@@ -90,6 +90,11 @@
           <Parameter Name="CStatus" Type="nvarchar" Mode="In" />
           <Parameter Name="OStatus" Type="int" Mode="InOut" />
         </Function>
+        <Function Name="SP_CountAppliedFreelanceWithID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fid" Type="int" Mode="In" />
+          <Parameter Name="pid" Type="int" Mode="In" />
+          <Parameter Name="status" Type="int" Mode="InOut" />
+        </Function>
         <Function Name="sp_Freelancer_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FId" Type="int" Mode="In" />
           <Parameter Name="FName" Type="nvarchar" Mode="In" />
@@ -108,6 +113,9 @@
         <Function Name="sp_Get_Login_Id" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="una" Type="nvarchar" Mode="In" />
           <Parameter Name="pw" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_GetProjectDatawithID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pid" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_Login_GetMax_Id" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_Login_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -149,6 +157,9 @@
           <Parameter Name="PType" Type="nvarchar" Mode="In" />
           <Parameter Name="PStatus" Type="nvarchar" Mode="In" />
           <Parameter Name="OStatus" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="sp_Projectsearches" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="qry" Type="nvarchar(max)" Mode="In" />
         </Function>
         <EntityContainer Name="MVC_ProjectModelStoreContainer">
           <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
@@ -253,6 +264,11 @@
             <Parameter Name="CStatus" Mode="In" Type="String" />
             <Parameter Name="OStatus" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SP_CountAppliedFreelanceWithID">
+            <Parameter Name="fid" Mode="In" Type="Int32" />
+            <Parameter Name="pid" Mode="In" Type="Int32" />
+            <Parameter Name="status" Mode="InOut" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="sp_Freelancer_Insert">
             <Parameter Name="FId" Mode="In" Type="Int32" />
             <Parameter Name="FName" Mode="In" Type="String" />
@@ -271,6 +287,9 @@
           <FunctionImport Name="sp_Get_Login_Id" ReturnType="Collection(Int32)">
             <Parameter Name="una" Mode="In" Type="String" />
             <Parameter Name="pw" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetProjectDatawithID" ReturnType="Collection(MVC_ProjectModel.sp_GetProjectDatawithID_Result)">
+            <Parameter Name="pid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_Login_GetMax_Id" ReturnType="Collection(Int32)" />
           <FunctionImport Name="sp_Login_Insert">
@@ -313,7 +332,25 @@
             <Parameter Name="PStatus" Mode="In" Type="String" />
             <Parameter Name="OStatus" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_Projectsearches" ReturnType="Collection(MVC_ProjectModel.sp_Projectsearches_Result)">
+            <Parameter Name="qry" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="sp_GetProjectDatawithID_Result">
+          <Property Type="Int32" Name="PId" Nullable="false" />
+          <Property Type="Int32" Name="CId" Nullable="false" />
+          <Property Type="String" Name="PTitle" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="PDescription" Nullable="false" MaxLength="1250" />
+          <Property Type="String" Name="PSkill" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="PBudget" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="PExperiance" Nullable="false" />
+          <Property Type="String" Name="PQualification" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="PLocation" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="PAdd" Nullable="false" />
+          <Property Type="DateTime" Name="PEnd" Nullable="false" />
+          <Property Type="String" Name="PType" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="PStatus" Nullable="false" MaxLength="50" />
+        </ComplexType>
         <ComplexType Name="sp_Project_GetOpen_Result">
           <Property Type="Int32" Name="PId" Nullable="false" />
           <Property Type="String" Name="PTitle" Nullable="false" MaxLength="50" />
@@ -326,6 +363,30 @@
           <Property Type="DateTime" Name="PEnd" Nullable="false" />
           <Property Type="String" Name="PType" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="CCompany_Name" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_Projectsearches_Result">
+          <Property Type="Int32" Name="PId" Nullable="false" />
+          <Property Type="Int32" Name="CId" Nullable="false" />
+          <Property Type="String" Name="PTitle" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="PDescription" Nullable="false" MaxLength="1250" />
+          <Property Type="String" Name="PSkill" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="PBudget" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="PExperiance" Nullable="false" />
+          <Property Type="String" Name="PQualification" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="PLocation" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="PAdd" Nullable="false" />
+          <Property Type="DateTime" Name="PEnd" Nullable="false" />
+          <Property Type="String" Name="PType" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="PStatus" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Client_CId" Nullable="false" />
+          <Property Type="String" Name="CName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CPhone" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CEmail" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CAddress" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CCompany_Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CC_Description" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="CPhoto" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="CStatus" Nullable="false" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -412,8 +473,28 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_Client_Insert" FunctionName="MVC_ProjectModel.Store.sp_Client_Insert" />
+          <FunctionImportMapping FunctionImportName="SP_CountAppliedFreelanceWithID" FunctionName="MVC_ProjectModel.Store.SP_CountAppliedFreelanceWithID" />
           <FunctionImportMapping FunctionImportName="sp_Freelancer_Insert" FunctionName="MVC_ProjectModel.Store.sp_Freelancer_Insert" />
           <FunctionImportMapping FunctionImportName="sp_Get_Login_Id" FunctionName="MVC_ProjectModel.Store.sp_Get_Login_Id" />
+          <FunctionImportMapping FunctionImportName="sp_GetProjectDatawithID" FunctionName="MVC_ProjectModel.Store.sp_GetProjectDatawithID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MVC_ProjectModel.sp_GetProjectDatawithID_Result">
+                <ScalarProperty Name="PId" ColumnName="PId" />
+                <ScalarProperty Name="CId" ColumnName="CId" />
+                <ScalarProperty Name="PTitle" ColumnName="PTitle" />
+                <ScalarProperty Name="PDescription" ColumnName="PDescription" />
+                <ScalarProperty Name="PSkill" ColumnName="PSkill" />
+                <ScalarProperty Name="PBudget" ColumnName="PBudget" />
+                <ScalarProperty Name="PExperiance" ColumnName="PExperiance" />
+                <ScalarProperty Name="PQualification" ColumnName="PQualification" />
+                <ScalarProperty Name="PLocation" ColumnName="PLocation" />
+                <ScalarProperty Name="PAdd" ColumnName="PAdd" />
+                <ScalarProperty Name="PEnd" ColumnName="PEnd" />
+                <ScalarProperty Name="PType" ColumnName="PType" />
+                <ScalarProperty Name="PStatus" ColumnName="PStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_Login_GetMax_Id" FunctionName="MVC_ProjectModel.Store.sp_Login_GetMax_Id" />
           <FunctionImportMapping FunctionImportName="sp_Login_Insert" FunctionName="MVC_ProjectModel.Store.sp_Login_Insert" />
           <FunctionImportMapping FunctionImportName="sp_LoginCount" FunctionName="MVC_ProjectModel.Store.sp_LoginCount" />
@@ -437,6 +518,34 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_Project_Insert" FunctionName="MVC_ProjectModel.Store.sp_Project_Insert" />
+          <FunctionImportMapping FunctionImportName="sp_Projectsearches" FunctionName="MVC_ProjectModel.Store.sp_Projectsearches">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MVC_ProjectModel.sp_Projectsearches_Result">
+                <ScalarProperty Name="PId" ColumnName="PId" />
+                <ScalarProperty Name="CId" ColumnName="CId" />
+                <ScalarProperty Name="PTitle" ColumnName="PTitle" />
+                <ScalarProperty Name="PDescription" ColumnName="PDescription" />
+                <ScalarProperty Name="PSkill" ColumnName="PSkill" />
+                <ScalarProperty Name="PBudget" ColumnName="PBudget" />
+                <ScalarProperty Name="PExperiance" ColumnName="PExperiance" />
+                <ScalarProperty Name="PQualification" ColumnName="PQualification" />
+                <ScalarProperty Name="PLocation" ColumnName="PLocation" />
+                <ScalarProperty Name="PAdd" ColumnName="PAdd" />
+                <ScalarProperty Name="PEnd" ColumnName="PEnd" />
+                <ScalarProperty Name="PType" ColumnName="PType" />
+                <ScalarProperty Name="PStatus" ColumnName="PStatus" />
+                <ScalarProperty Name="Client_CId" ColumnName="Client_CId" />
+                <ScalarProperty Name="CName" ColumnName="CName" />
+                <ScalarProperty Name="CPhone" ColumnName="CPhone" />
+                <ScalarProperty Name="CEmail" ColumnName="CEmail" />
+                <ScalarProperty Name="CAddress" ColumnName="CAddress" />
+                <ScalarProperty Name="CCompany_Name" ColumnName="CCompany_Name" />
+                <ScalarProperty Name="CC_Description" ColumnName="CC_Description" />
+                <ScalarProperty Name="CPhoto" ColumnName="CPhoto" />
+                <ScalarProperty Name="CStatus" ColumnName="CStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -7,7 +7,7 @@ using System.Web;
 namespace MVC_Project_Freelance.Models
 {
     public class ProjectInsertClass
-    {
+    {                                                                                                                  
         public int CId { get; set; }
         [Required(ErrorMessage = "Enter your Name please")]
         public string PTitle { get; set; }

@@ -1,0 +1,673 @@
+﻿@model MVC_Project_Freelance.Models.ProjectApplicationView
+
+@using System
+@using System.Linq
+
+@{
+    ViewBag.Title = "Project Application";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var project = Model != null && Model.selectjobdetails != null
+        ? Model.selectjobdetails.FirstOrDefault()
+        : null;
+
+    bool alreadyApplied = ViewBag.isapplied != null
+                          && Convert.ToInt32(ViewBag.isapplied) == 1;
+}
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+    }
+
+    .application-page {
+        min-height: calc(100vh - 70px);
+        background: radial-gradient(circle at 12% 18%, rgba(212,20,20,.10), transparent 40%), radial-gradient(circle at 88% 85%, rgba(255,140,0,.12), transparent 40%), linear-gradient(135deg, #fff5f3, #ffe9e4 55%, #fff8f0);
+        padding: 30px 20px 45px;
+        box-sizing: border-box;
+    }
+
+    .application-container {
+        max-width: 1050px;
+        margin: 0 auto;
+    }
+
+    /* HERO */
+
+    .application-hero {
+        background: linear-gradient(160deg, #5c0000, #a80d0d 55%, #e8431a);
+        color: white;
+        border-radius: 18px;
+        padding: 27px 32px;
+        border-top: 4px solid #ffb43c;
+        box-shadow: 0 15px 35px rgba(160,20,20,.18);
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-text {
+        position: relative;
+        z-index: 1;
+    }
+
+        .hero-text h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .hero-text p {
+            margin: 0;
+            color: #ffe9e4;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+    .back-btn {
+        position: relative;
+        z-index: 1;
+        display: inline-block;
+        padding: 10px 17px;
+        background: rgba(255,255,255,.15);
+        border: 1px solid rgba(255,255,255,.4);
+        border-radius: 9px;
+        color: white;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        transition: .2s;
+    }
+
+        .back-btn:hover {
+            color: white;
+            background: rgba(255,255,255,.28);
+            text-decoration: none;
+        }
+
+    /* MAIN CARD */
+
+    .application-card {
+        background: white;
+        border-radius: 18px;
+        padding: 30px;
+        border-top: 4px solid #c11212;
+        box-shadow: 0 18px 40px rgba(160,20,20,.12);
+        margin-bottom: 22px;
+        box-sizing: border-box;
+    }
+
+    .section-heading {
+        color: #3a0505;
+        font-size: 21px;
+        font-weight: 700;
+        margin: 0 0 7px;
+    }
+
+    .section-subtitle {
+        color: #8c6666;
+        font-size: 13px;
+        line-height: 1.6;
+        margin: 0 0 24px;
+    }
+
+    .project-title {
+        color: #a80d0d;
+        font-size: 25px;
+        font-weight: 700;
+        margin: 0 0 12px;
+        overflow-wrap: break-word;
+    }
+
+    .project-description {
+        color: #654343;
+        font-size: 14px;
+        line-height: 1.9;
+        white-space: pre-line;
+        overflow-wrap: break-word;
+        margin-bottom: 24px;
+    }
+
+    .type-badge {
+        display: inline-block;
+        background: #fff4e0;
+        color: #8a4b00;
+        border: 1px solid #ffd9a0;
+        border-radius: 20px;
+        padding: 6px 13px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    /* PROJECT DETAILS */
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 15px;
+        margin: 20px 0 28px;
+    }
+
+    .detail-box {
+        background: #fff8f6;
+        border: 1px solid #f4dcd5;
+        border-radius: 12px;
+        padding: 17px;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .detail-label {
+        display: block;
+        color: #956e6e;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .6px;
+        margin-bottom: 9px;
+    }
+
+    .detail-value {
+        display: block;
+        color: #4a1010;
+        font-size: 14px;
+        font-weight: 700;
+        overflow-wrap: break-word;
+        line-height: 1.6;
+    }
+
+    .subheading {
+        color: #3a0505;
+        font-size: 16px;
+        font-weight: 700;
+        padding-bottom: 12px;
+        margin: 24px 0 16px;
+        border-bottom: 1px solid #f2ddd7;
+    }
+
+    /* APPLICATION FORM */
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 19px;
+        min-width: 0;
+    }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+    .form-label {
+        display: block;
+        color: #4a1010;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 9px;
+    }
+
+    .required {
+        color: #c11212;
+    }
+
+    .form-control-custom {
+        display: block;
+        width: 100%;
+        min-height: 44px;
+        padding: 11px 13px;
+        border: 1px solid #edcec5;
+        border-radius: 9px;
+        background: #fffaf9;
+        color: #4a1010;
+        font-size: 13px;
+        box-sizing: border-box;
+        transition: .2s;
+    }
+
+    textarea.form-control-custom {
+        min-height: 145px;
+        resize: vertical;
+        line-height: 1.7;
+    }
+
+    .form-control-custom:focus {
+        outline: none;
+        border-color: #d41414;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(212,20,20,.10);
+    }
+
+    input[type="file"].form-control-custom {
+        padding: 9px;
+        background: #fff8f6;
+    }
+
+    .field-help {
+        color: #987777;
+        font-size: 11px;
+        line-height: 1.6;
+        display: block;
+        margin-top: 7px;
+    }
+
+    .validation-summary-errors,
+    .field-validation-error {
+        color: #b30c0c;
+        font-size: 12px;
+    }
+
+    .validation-summary-errors {
+        background: #fff0ed;
+        border: 1px solid #f0c4bb;
+        border-radius: 9px;
+        padding: 12px 16px;
+        margin-bottom: 18px;
+    }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+    /* BUTTONS */
+
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 10px;
+    }
+
+    .apply-button {
+        border: none;
+        border-radius: 9px;
+        background: linear-gradient(135deg, #a80d0d, #d41414);
+        color: white;
+        padding: 13px 25px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 5px 12px rgba(168,13,13,.16);
+        transition: .2s;
+    }
+
+        .apply-button:hover {
+            background: linear-gradient(135deg, #7d0505, #b30c0c);
+            transform: translateY(-1px);
+        }
+
+    .cancel-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 20px;
+        border: 1px solid #e6c5be;
+        border-radius: 9px;
+        background: #fff7f5;
+        color: #8f0808;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+        .cancel-button:hover {
+            color: #a80d0d;
+            background: #fff0ed;
+            text-decoration: none;
+        }
+
+    /* APPLICATION STATUS */
+
+    .status-card {
+        text-align: center;
+        background: #fff8f6;
+        border: 1px solid #f2d3ca;
+        border-radius: 14px;
+        padding: 30px 20px;
+        margin-top: 20px;
+    }
+
+    .status-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background: #e3f6e9;
+        color: #16753a;
+        font-size: 27px;
+        margin: 0 auto 15px;
+    }
+
+    .status-card h3 {
+        color: #176b36;
+        font-size: 21px;
+        font-weight: 700;
+        margin: 0 0 10px;
+    }
+
+    .status-card p {
+        color: #765b5b;
+        font-size: 13px;
+        line-height: 1.8;
+        margin: 0;
+    }
+
+    .not-found {
+        text-align: center;
+        color: #8c6666;
+        padding: 45px 20px;
+    }
+
+    /* RESPONSIVE */
+
+    @@media (max-width: 800px) {
+        .details-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .application-card {
+            padding: 22px;
+        }
+
+        .application-hero {
+            padding: 23px;
+        }
+
+        .hero-text h1 {
+            font-size: 23px;
+        }
+    }
+
+    @@media (max-width: 520px) {
+        .application-page {
+            padding: 18px 12px 30px;
+        }
+
+        .application-hero {
+            display: block;
+        }
+
+        .back-btn {
+            margin-top: 17px;
+        }
+
+        .details-grid,
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group.full-width {
+            grid-column: auto;
+        }
+
+        .application-card {
+            padding: 18px;
+        }
+
+        .project-title {
+            font-size: 21px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .apply-button,
+        .cancel-button {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="application-page">
+    <div class="application-container">
+
+        <!-- HERO -->
+        <div class="application-hero">
+            <div class="hero-text">
+                <h1>Project Application 🚀</h1>
+                <p>
+                    Explore the project requirements and submit your proposal
+                    to get started.
+                </p>
+            </div>
+
+            <a href="@Url.Action("FreelancerHomePage", "FreelancerHome")"
+               class="back-btn">
+                ← Back to Projects
+            </a>
+        </div>
+
+        @if (project == null)
+        {
+            <div class="application-card not-found">
+                <h2>Project Not Found</h2>
+                <p>The project details could not be loaded. Please return to the projects page.</p>
+
+                <br />
+
+                <a href="@Url.Action("FreelancerHomePage", "FreelancerHome")"
+                   class="cancel-button">
+                    Browse Projects
+                </a>
+            </div>
+        }
+        else
+        {
+            <!-- PROJECT INFORMATION -->
+            <div class="application-card">
+
+                <h2 class="section-heading">Project Details</h2>
+
+                <p class="section-subtitle">
+                    Review the complete project information before applying.
+                </p>
+
+                <span class="type-badge">
+                    @(String.IsNullOrWhiteSpace(project.PType)
+                        ? "Project"
+                        : project.PType)
+                </span>
+
+                <h2 class="project-title">
+                    @project.PTitle
+                </h2>
+
+                <div class="project-description">@project.PDescription</div>
+
+                <div class="details-grid">
+
+                    <div class="detail-box">
+                        <span class="detail-label">Project ID</span>
+                        <span class="detail-value">#@project.PId</span>
+                    </div>
+
+                    <div class="detail-box">
+                        <span class="detail-label">Budget</span>
+                        <span class="detail-value">
+                            ₹@project.PBudget
+                        </span>
+                    </div>
+
+                    <div class="detail-box">
+                        <span class="detail-label">Required Experience</span>
+                        <span class="detail-value">
+                            @(project.PExperiance == 0
+                                ? "Fresher"
+                                : project.PExperiance + " year(s)")
+                        </span>
+                    </div>
+
+                    <div class="detail-box">
+                        <span class="detail-label">Required Skills</span>
+                        <span class="detail-value">
+                            @(String.IsNullOrWhiteSpace(project.PSkill)
+                                ? "Not specified"
+                                : project.PSkill)
+                        </span>
+                    </div>
+
+                    <div class="detail-box">
+                        <span class="detail-label">Location</span>
+                        <span class="detail-value">
+                            @(String.IsNullOrWhiteSpace(project.PLocation)
+                                ? "Not specified"
+                                : project.PLocation)
+                        </span>
+                    </div>
+
+                    <div class="detail-box">
+                        <span class="detail-label">Application Deadline</span>
+                        <span class="detail-value">
+                            @(project.PEnd != DateTime.MinValue
+                                ? project.PEnd.ToString("dd MMM yyyy")
+                                : "Not specified")
+                        </span>
+                    </div>
+
+                </div>
+
+                @if (alreadyApplied)
+                {
+                    <!-- ALREADY APPLIED -->
+                    <div class="status-card">
+                        <div class="status-icon">✓</div>
+
+                        <h3>Already Applied!</h3>
+
+                        <p>
+                            You have already submitted an application for this project.
+                            <br />
+                            You cannot apply for the same project again.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <!-- APPLICATION FORM -->
+                    <h2 class="section-heading">Submit Your Application ✍️</h2>
+
+                    <p class="section-subtitle">
+                        Explain why you are suitable for this project, enter your
+                        expected payment, and attach your resume.
+                    </p>
+
+                    <form action="@Url.Action("Application_click", "ApplyProject")"
+                          method="post"
+                          enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+
+                        @Html.Hidden("PId", project.PId)
+
+                        @Html.ValidationSummary(
+                            false,
+                            "",
+                            new { @class = "validation-summary-errors" })
+
+                        <div class="form-grid">
+
+                            <!-- PROPOSAL -->
+                            <div class="form-group full-width">
+                                <label for="AProposal" class="form-label">
+                                    Your Proposal <span class="required">*</span>
+                                </label>
+
+                                <textarea id="AProposal"
+                                          name="AProposal"
+                                          class="form-control-custom"
+                                          placeholder="Explain your approach, relevant experience, and how you will complete this project..."
+                                          maxlength="3000"
+                                          required>@(Model.AProposal ?? "")</textarea>
+
+                                <span class="field-help">
+                                    Describe your approach and why you are a good fit for this project.
+                                </span>
+
+                                @Html.ValidationMessage(
+                                    "AProposal",
+                                    "",
+                                    new { @class = "field-validation-error" })
+                            </div>
+
+                            <!-- EXPECTED AMOUNT -->
+                            <div class="form-group">
+                                <label for="AExpected_Amount" class="form-label">
+                                    Expected Amount (₹) <span class="required">*</span>
+                                </label>
+
+                                <input type="number"
+                                       id="AExpected_Amount"
+                                       name="AExpected_Amount"
+                                       class="form-control-custom"
+                                       placeholder="Enter your expected amount"
+                                       min="1"
+                                       step="0.01"
+                                       value="@(Model.AExpected_Amount)"
+                                       required />
+
+                                <span class="field-help">
+                                    Enter the amount you expect to receive for this project.
+                                </span>
+
+                                @Html.ValidationMessage(
+                                    "AExpected_Amount",
+                                    "",
+                                    new { @class = "field-validation-error" })
+                            </div>
+
+                            <!-- RESUME -->
+                            <div class="form-group">
+                                <label for="file" class="form-label">
+                                    Upload Resume <span class="required">*</span>
+                                </label>
+
+                                <input type="file"
+                                       id="file"
+                                       name="file"
+                                       class="form-control-custom"
+                                       accept=".pdf,.doc,.docx"
+                                       required />
+
+                                <span class="field-help">
+                                    Accepted formats: PDF, DOC, DOCX. PDF is recommended.
+                                </span>
+                            </div>
+
+                          
+                        </div>
+
+                        <div class="action-buttons">
+
+                            <button type="submit" class="apply-button">
+                                 Submit Application
+                            </button>
+
+                            <a href="@Url.Action("FreelancerHomePage", "FreelancerHome")"
+                               class="cancel-button">
+                                Cancel
+                            </a>
+
+                        </div>
+                    </form>
+                }
+            </div>
+        }
+
+    </div>
+</div>

@@ -8,6 +8,7 @@ namespace MVC_Project_Freelance.Models
     public class ProjectSearch
     {
         public int CId { get; set; }
+        public string CCompany_Name { get; set; }
         public int PId { get; set; }
         public string PTitle { get; set; }
         public string PDescription { get; set; }

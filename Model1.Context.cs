@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MVC_Project_Freelance.Models
+namespace MVC_Project_Freelance
 {
     using System;
     using System.Data.Entity;
@@ -74,6 +74,19 @@ namespace MVC_Project_Freelance.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_Client_Insert", cIdParameter, cNameParameter, cPhoneParameter, cEmailParameter, cAddressParameter, cCompany_NameParameter, cC_DescriptionParameter, cPhotoParameter, cStatusParameter, oStatus);
         }
     
+        public virtual int SP_CountAppliedFreelanceWithID(Nullable<int> fid, Nullable<int> pid, ObjectParameter status)
+        {
+            var fidParameter = fid.HasValue ?
+                new ObjectParameter("fid", fid) :
+                new ObjectParameter("fid", typeof(int));
+    
+            var pidParameter = pid.HasValue ?
+                new ObjectParameter("pid", pid) :
+                new ObjectParameter("pid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_CountAppliedFreelanceWithID", fidParameter, pidParameter, status);
+        }
+    
         public virtual int sp_Freelancer_Insert(Nullable<int> fId, string fName, Nullable<int> fAge, string fPhone, string fEmail, string fAddress, string fQualification, Nullable<int> fExp, string fSkills, string fPhoto, string fResume, string fStatus, ObjectParameter oStatus)
         {
             var fIdParameter = fId.HasValue ?
@@ -138,6 +151,15 @@ namespace MVC_Project_Freelance.Models
                 new ObjectParameter("pw", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_Get_Login_Id", unaParameter, pwParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetProjectDatawithID_Result> sp_GetProjectDatawithID(Nullable<int> pid)
+        {
+            var pidParameter = pid.HasValue ?
+                new ObjectParameter("pid", pid) :
+                new ObjectParameter("pid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetProjectDatawithID_Result>("sp_GetProjectDatawithID", pidParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> sp_Login_GetMax_Id()
@@ -285,6 +307,15 @@ namespace MVC_Project_Freelance.Models
                 new ObjectParameter("PStatus", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_Project_Insert", cIdParameter, pTitleParameter, pDescriptionParameter, pSkillParameter, pBudgetParameter, pExperianceParameter, pQualificationParameter, pLocationParameter, pAddParameter, pEndParameter, pTypeParameter, pStatusParameter, oStatus);
+        }
+    
+        public virtual ObjectResult<sp_Projectsearches_Result> sp_Projectsearches(string qry)
+        {
+            var qryParameter = qry != null ?
+                new ObjectParameter("qry", qry) :
+                new ObjectParameter("qry", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Projectsearches_Result>("sp_Projectsearches", qryParameter);
         }
     }
 }

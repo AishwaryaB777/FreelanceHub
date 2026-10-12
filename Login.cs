@@ -7,20 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MVC_Project_Freelance.Models
+namespace MVC_Project_Freelance
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Project_Application
+    public partial class Login
     {
-        public int A_Id { get; set; }
-        public int FId { get; set; }
-        public int PId { get; set; }
-        public System.DateTime ADate { get; set; }
-        public string AProposal { get; set; }
-        public string AExpected_Amount { get; set; }
-        public string AResume { get; set; }
-        public int AStatus { get; set; }
+        public int LId { get; set; }
+        public int RegId { get; set; }
+        public string LUsername { get; set; }
+        public string LPassword { get; set; }
+        public string LRole { get; set; }
+        public string LStatus { get; set; }
     }
 }
