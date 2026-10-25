@@ -1,0 +1,284 @@
+﻿@model MVC_Project_Freelance.Models.ProjectInsertClass
+
+@{
+    ViewBag.Title = "ClientPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .home-page {
+        min-height: calc(100vh - 70px);
+        background: radial-gradient(circle at 12% 18%, rgba(212, 20, 20, 0.10), transparent 40%), radial-gradient(circle at 88% 85%, rgba(255, 140, 0, 0.12), transparent 40%), linear-gradient(135deg, #fff5f3, #ffe9e4 55%, #fff8f0);
+        padding: 45px 20px;
+    }
+
+    .home-container {
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .home-hero {
+        background: linear-gradient(160deg, #5c0000 0%, #a80d0d 50%, #e8431a 100%);
+        color: white;
+        border-radius: 22px;
+        padding: 40px;
+        box-shadow: 0 25px 60px rgba(160, 20, 20, 0.18);
+        border-top: 4px solid #ffb43c;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+        .home-hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .home-hero p {
+            color: #ffe9e4;
+            font-size: 15px;
+            margin: 0;
+            line-height: 1.7;
+        }
+
+    .hero-links {
+        display: flex;
+        gap: 10px;
+    }
+
+    .logout-btn {
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        color: #fff;
+        padding: 10px 22px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.28);
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .project-card {
+        background: #fff;
+        border-radius: 22px;
+        padding: 35px;
+        box-shadow: 0 25px 60px rgba(160, 20, 20, 0.14), 0 4px 14px rgba(160, 20, 20, 0.08);
+        border-top: 4px solid #c11212;
+    }
+
+    .form-heading h2 {
+        font-size: 26px;
+        font-weight: 700;
+        color: #3a0505;
+        margin-bottom: 6px;
+    }
+
+    .form-heading p {
+        color: #8c6666;
+        font-size: 14px;
+        margin: 0 0 22px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #5a2020;
+            margin-bottom: 6px;
+        }
+
+    .form-control-red {
+        width: 100%;
+        border: 1px solid #f0d3cc;
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 14px;
+        background: #fffaf9;
+        box-sizing: border-box;
+    }
+
+        .form-control-red:focus {
+            border-color: #d41414;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(212, 20, 20, 0.10);
+            outline: none;
+        }
+
+    textarea.form-control-red {
+        min-height: 110px;
+        resize: vertical;
+    }
+
+    .field-error {
+        color: #a80d0d;
+        font-size: 12px;
+        margin-top: 4px;
+    }
+
+    .success-message {
+        background: #fff4e0;
+        color: #8a4b00;
+        padding: 12px 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        border-left: 4px solid #ff9a1f;
+    }
+
+    .submit-btn {
+        margin-top: 22px;
+        padding: 12px 34px;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #fff;
+        cursor: pointer;
+        background: linear-gradient(135deg, #a80d0d, #e0201a, #ff5a1f);
+        box-shadow: 0 8px 20px rgba(212, 20, 20, 0.3);
+        transition: all 0.2s ease;
+    }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgba(212, 20, 20, 0.4);
+        }
+
+    @@media (max-width: 800px) {
+        .home-hero {
+            display: block;
+            padding: 30px 24px;
+        }
+
+        .hero-links {
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .project-card {
+            padding: 24px 16px;
+        }
+    }
+</style>
+
+<div class="home-page">
+    <div class="home-container">
+
+        <div class="home-hero">
+            <div>
+                <h1>Client Dashboard 🔥</h1>
+                <p>Post a new project and find the right freelancer for it.</p>
+            </div>
+            <div class="hero-links">
+                <a class="logout-btn" href="@Url.Action("ViewApplicants", "ClientHomeApplication")">View applicants</a>
+                <a class="logout-btn" href="@Url.Action("LoginPage", "Login")">Log out</a>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="form-heading">
+                <h2>Post a project</h2>
+                <p>Fill in the details below. Freelancers will see it and can apply.</p>
+            </div>
+
+            @using (Html.BeginForm("ButtonClick", "ClientProjectAdding", FormMethod.Post))
+            {
+                <div class="form-grid">
+
+                    <div class="form-group full">
+                        <label>Project title</label>
+                        @Html.TextBoxFor(m => m.PTitle, new { @class = "form-control-red", placeholder = "e.g. Build a company website" })
+                        @Html.ValidationMessageFor(m => m.PTitle, "", new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Description</label>
+                        @Html.TextAreaFor(m => m.PDescription, new { @class = "form-control-red", placeholder = "Describe the work..." })
+                        @Html.ValidationMessageFor(m => m.PDescription, "", new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Skills required</label>
+                        @Html.TextBoxFor(m => m.PSkill, new { @class = "form-control-red", placeholder = "C#, Angular, SQL" })
+                        @Html.ValidationMessageFor(m => m.PSkill, "", new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Budget (₹)</label>
+                        @Html.TextBoxFor(m => m.PBudget, new { @class = "form-control-red", placeholder = "e.g. 25000" })
+                        @Html.ValidationMessageFor(m => m.PBudget, "", new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Experience needed</label>
+                        @Html.TextBoxFor(m => m.PExperiance, new { @class = "form-control-red", placeholder = "e.g. 2 years" })
+                        @Html.ValidationMessageFor(m => m.PExperiance, "", new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Qualification</label>
+                        @Html.TextBoxFor(m => m.PQualification, new { @class = "form-control-red", placeholder = "e.g. B.Tech" })
+                        @Html.ValidationMessageFor(m => m.PQualification, "", new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Location</label>
+                        @Html.TextBoxFor(m => m.PLocation, new { @class = "form-control-red", placeholder = "Remote / City" })
+                        @Html.ValidationMessageFor(m => m.PLocation, "", new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Project type</label>
+                        @Html.DropDownListFor(m => m.PType,
+                            new SelectList(new[] { "Fixed Price", "Hourly", "Part Time", "Full Time" }),
+                            "-- Select --",
+                            new { @class = "form-control-red" })
+                        @Html.ValidationMessageFor(m => m.PType, "", new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Start date</label>
+                        @Html.TextBoxFor(m => m.PAdd, new { @class = "form-control-red", type = "date" })
+                        @Html.ValidationMessageFor(m => m.PAdd, "", new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>End date</label>
+                        @Html.TextBoxFor(m => m.PEnd, new { @class = "form-control-red", type = "date" })
+                        @Html.ValidationMessageFor(m => m.PEnd, "", new { @class = "field-error" })
+                    </div>
+
+                </div>
+
+                <button type="submit" class="submit-btn">Post project</button>
+            }
+        </div>
+    </div>
+</div>

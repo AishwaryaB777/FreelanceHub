@@ -1,42 +1,220 @@
-﻿<!DOCTYPE html>
-<html>
+﻿@{ bool loggedIn = Session["uid"] != null;
+    string role = Session["role"] as string;   // optional: set Session["role"] = "Client" / "Freelancer" in your Login controller }
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - FreelanceHub</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        /* Reset the default MVC template spacing that would break the themed pages */
+        html, body {
+            margin: 0;
+            padding: 0 !important;
+        }
+
+        body {
+            background: #fff5f3;
+            color: #3a2020;
+        }
+
+        /* Site.css limits inputs to 280px - our forms need full width */
+        input, select, textarea {
+            max-width: none;
+        }
+
+        /* HEADER (70px tall - the pages use calc(100vh - 70px)) */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 70px;
+            background: linear-gradient(160deg, #3a0000 0%, #7a0a0a 55%, #b3200f 100%);
+            border-bottom: 3px solid #ffb43c;
+            box-shadow: 0 6px 20px rgba(92, 0, 0, 0.25);
+        }
+
+        .header-inner {
+            max-width: 1320px;
+            height: 100%;
+            margin: auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-decoration: none;
+        }
+
+            .brand:hover {
+                color: #ffffff;
+                text-decoration: none;
+            }
+
+        .brand-mark {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ffb43c, #ff5a1f);
+            color: #3a0000;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .site-nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+            .site-nav a {
+                color: #ffe9e4;
+                padding: 9px 16px;
+                border-radius: 10px;
+                font-size: 14px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: all 0.2s ease;
+            }
+
+                .site-nav a:hover {
+                    background: rgba(255, 255, 255, 0.16);
+                    color: #ffffff;
+                    text-decoration: none;
+                }
+
+                .site-nav a.nav-cta {
+                    background: linear-gradient(135deg, #ff7a2f, #ffb43c);
+                    color: #3a0000;
+                    margin-left: 6px;
+                }
+
+                    .site-nav a.nav-cta:hover {
+                        background: linear-gradient(135deg, #ff8f4d, #ffc45e);
+                        color: #3a0000;
+                    }
+
+        .nav-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #fff;
+            width: 42px;
+            height: 38px;
+            border-radius: 10px;
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        /* PAGE BODY - full width, each page controls its own container */
+        .site-main {
+            min-height: calc(100vh - 70px);
+        }
+
+        /* FOOTER */
+        .site-footer {
+            background: #3a0000;
+            color: #e9b9b0;
+            text-align: center;
+            font-size: 13px;
+            padding: 16px 20px;
+        }
+
+        /* MOBILE */
+        @@media (max-width: 800px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .site-nav {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 4px;
+                padding: 14px 20px 18px;
+                background: #5c0000;
+                border-bottom: 3px solid #ffb43c;
+            }
+
+                .site-nav.open {
+                    display: flex;
+                }
+
+                .site-nav a.nav-cta {
+                    margin-left: 0;
+                    text-align: center;
+                }
+        }
+    </style>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-            </div>
+
+    <header class="site-header">
+        <div class="header-inner">
+
+            <a class="brand" href="@Url.Action(loggedIn ? (role == "Freelancer" ? "FreelancerHomePage" : "ClientHomePage") : "LoginPage", loggedIn ? (role == "Freelancer" ? "FreelancerHome" : "ClientHome") : "Login")">
+                <span class="brand-mark">F</span>
+                FreelanceHub
+            </a>
+
+            <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
+
+            <nav class="site-nav" id="siteNav">
+                @if (!loggedIn)
+                {
+    <a href="@Url.Action("LoginPage", "Login")" class="nav-cta">Log in</a> }
+                else if (role == "Client")
+                {
+    <a href="@Url.Action("ClientHomePage", "ClientHome")">Post a project</a>
+                    <a href="@Url.Action("ViewApplicants", "ClientHome")">Applicants</a>
+                                    <a href="@Url.Action("LoginPage", "Login")" class="nav-cta">Log out</a> }
+                else if (role == "Freelancer")
+                { @* change the controller/action below to your freelancer home page *@
+                                                                <a href="@Url.Action("FreelancerHomePage", "FreelancerHome")">Browse projects</a>
+                                                                                <a href="@Url.Action("LoginPage", "Login")" class="nav-cta">Log out</a> }
+                else
+                { @* logged in but Session["role"] is not set *@
+                                                                                                            <a href="@Url.Action("LoginPage", "Login")" class="nav-cta">Log out</a>}
+            </nav>
+
         </div>
-    </div>
-    <div class="container body-content">
+    </header>
+
+    <main class="site-main">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+    </main>
+
+    <footer class="site-footer">
+        &copy; @DateTime.Now.Year FreelanceHub. All rights reserved.
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script>
+        document.getElementById("navToggle").addEventListener("click", function () {
+            document.getElementById("siteNav").classList.toggle("open");
+        });
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
+    }

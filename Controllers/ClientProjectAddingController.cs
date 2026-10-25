@@ -7,11 +7,11 @@ using System.Web.Mvc;
 using MVC_Project_Freelance.Models;
 namespace MVC_Project_Freelance.Controllers
 {
-    public class ClientHomeController : Controller
+    public class ClientProjectAddingController : Controller
     {
         MVC_ProjectEntities dob = new MVC_ProjectEntities();
         // GET: ClientHome
-        public ActionResult ClientHomePage()
+        public ActionResult ClientPage()
         {
             return View();
         }
@@ -28,9 +28,9 @@ namespace MVC_Project_Freelance.Controllers
                     cob.PAdd, cob.PEnd, cob.PType, cob.PStatus, op);
                 ModelState.Clear();
                 cob.PMsg = "Successfully Registered";
-                return View("ClientHomePage", cob);
+                return View("ClientPage", cob);
             }
-            return View("ClientHomePage", cob);
+            return View("ClientPage", cob);
         }
     }
 }

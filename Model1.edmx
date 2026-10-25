@@ -5,6 +5,19 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="MVC_ProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Application_Decision">
+          <Key>
+            <PropertyRef Name="D_Id" />
+          </Key>
+          <Property Name="D_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="A_Id" Type="int" Nullable="false" />
+          <Property Name="CId" Type="int" Nullable="false" />
+          <Property Name="FId" Type="int" Nullable="false" />
+          <Property Name="PId" Type="int" Nullable="false" />
+          <Property Name="DDecision" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="DRemarks" Type="nvarchar" MaxLength="250" />
+          <Property Name="DDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="CId" />
@@ -78,6 +91,17 @@
           <Property Name="AResume" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="AStatus" Type="int" Nullable="false" />
         </EntityType>
+        <Function Name="sp_Application_Decide" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="A_Id" Type="int" Mode="In" />
+          <Parameter Name="CId" Type="int" Mode="In" />
+          <Parameter Name="Decision" Type="nvarchar" Mode="In" />
+          <Parameter Name="Remarks" Type="nvarchar" Mode="In" />
+          <Parameter Name="OStatus" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="sp_Client_GetApplications" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CId" Type="int" Mode="In" />
+          <Parameter Name="Status" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_Client_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CId" Type="int" Mode="In" />
           <Parameter Name="CName" Type="nvarchar" Mode="In" />
@@ -162,6 +186,7 @@
           <Parameter Name="qry" Type="nvarchar(max)" Mode="In" />
         </Function>
         <EntityContainer Name="MVC_ProjectModelStoreContainer">
+          <EntitySet Name="Application_Decision" EntityType="Self.Application_Decision" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Freelancer" EntityType="Self.Freelancer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
@@ -173,6 +198,19 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MVC_ProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Application_Decision">
+          <Key>
+            <PropertyRef Name="D_Id" />
+          </Key>
+          <Property Name="D_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="A_Id" Type="Int32" Nullable="false" />
+          <Property Name="CId" Type="Int32" Nullable="false" />
+          <Property Name="FId" Type="Int32" Nullable="false" />
+          <Property Name="PId" Type="Int32" Nullable="false" />
+          <Property Name="DDecision" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DRemarks" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="CId" />
@@ -247,11 +285,23 @@
           <Property Name="AStatus" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityContainer Name="MVC_ProjectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Application_Decision" EntityType="Self.Application_Decision" />
           <EntitySet Name="Clients" EntityType="Self.Client" />
           <EntitySet Name="Freelancers" EntityType="Self.Freelancer" />
           <EntitySet Name="Logins" EntityType="Self.Login" />
           <EntitySet Name="Projects" EntityType="Self.Project" />
           <EntitySet Name="Project_Application" EntityType="Self.Project_Application" />
+          <FunctionImport Name="sp_Application_Decide">
+            <Parameter Name="A_Id" Mode="In" Type="Int32" />
+            <Parameter Name="CId" Mode="In" Type="Int32" />
+            <Parameter Name="Decision" Mode="In" Type="String" />
+            <Parameter Name="Remarks" Mode="In" Type="String" />
+            <Parameter Name="OStatus" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_Client_GetApplications" ReturnType="Collection(MVC_ProjectModel.sp_Client_GetApplications_Result)">
+            <Parameter Name="CId" Mode="In" Type="Int32" />
+            <Parameter Name="Status" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="sp_Client_Insert">
             <Parameter Name="CId" Mode="In" Type="Int32" />
             <Parameter Name="CName" Mode="In" Type="String" />
@@ -336,6 +386,30 @@
             <Parameter Name="qry" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="sp_Client_GetApplications_Result">
+          <Property Type="Int32" Name="A_Id" Nullable="false" />
+          <Property Type="Int32" Name="PId" Nullable="false" />
+          <Property Type="String" Name="PTitle" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="PBudget" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="ADate" Nullable="false" />
+          <Property Type="String" Name="AProposal" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="AExpected_Amount" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="AResume" Nullable="false" MaxLength="250" />
+          <Property Type="Int32" Name="AStatus" Nullable="false" />
+          <Property Type="Int32" Name="FId" Nullable="false" />
+          <Property Type="String" Name="FName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="FAge" Nullable="false" />
+          <Property Type="String" Name="FPhone" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="FEmail" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="FAddress" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="FQualification" Nullable="false" MaxLength="250" />
+          <Property Type="Int32" Name="FExp" Nullable="false" />
+          <Property Type="String" Name="FSkills" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="FPhoto" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="FResume" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="DRemarks" Nullable="true" MaxLength="250" />
+          <Property Type="DateTime" Name="DDate" Nullable="true" Precision="23" />
+        </ComplexType>
         <ComplexType Name="sp_GetProjectDatawithID_Result">
           <Property Type="Int32" Name="PId" Nullable="false" />
           <Property Type="Int32" Name="CId" Nullable="false" />
@@ -394,6 +468,20 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MVC_ProjectModelStoreContainer" CdmEntityContainer="MVC_ProjectEntities">
+          <EntitySetMapping Name="Application_Decision">
+            <EntityTypeMapping TypeName="MVC_ProjectModel.Application_Decision">
+              <MappingFragment StoreEntitySet="Application_Decision">
+                <ScalarProperty Name="D_Id" ColumnName="D_Id" />
+                <ScalarProperty Name="A_Id" ColumnName="A_Id" />
+                <ScalarProperty Name="CId" ColumnName="CId" />
+                <ScalarProperty Name="FId" ColumnName="FId" />
+                <ScalarProperty Name="PId" ColumnName="PId" />
+                <ScalarProperty Name="DDecision" ColumnName="DDecision" />
+                <ScalarProperty Name="DRemarks" ColumnName="DRemarks" />
+                <ScalarProperty Name="DDate" ColumnName="DDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="MVC_ProjectModel.Client">
               <MappingFragment StoreEntitySet="Client">
@@ -472,6 +560,35 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_Application_Decide" FunctionName="MVC_ProjectModel.Store.sp_Application_Decide" />
+          <FunctionImportMapping FunctionImportName="sp_Client_GetApplications" FunctionName="MVC_ProjectModel.Store.sp_Client_GetApplications">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MVC_ProjectModel.sp_Client_GetApplications_Result">
+                <ScalarProperty Name="A_Id" ColumnName="A_Id" />
+                <ScalarProperty Name="PId" ColumnName="PId" />
+                <ScalarProperty Name="PTitle" ColumnName="PTitle" />
+                <ScalarProperty Name="PBudget" ColumnName="PBudget" />
+                <ScalarProperty Name="ADate" ColumnName="ADate" />
+                <ScalarProperty Name="AProposal" ColumnName="AProposal" />
+                <ScalarProperty Name="AExpected_Amount" ColumnName="AExpected_Amount" />
+                <ScalarProperty Name="AResume" ColumnName="AResume" />
+                <ScalarProperty Name="AStatus" ColumnName="AStatus" />
+                <ScalarProperty Name="FId" ColumnName="FId" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="FAge" ColumnName="FAge" />
+                <ScalarProperty Name="FPhone" ColumnName="FPhone" />
+                <ScalarProperty Name="FEmail" ColumnName="FEmail" />
+                <ScalarProperty Name="FAddress" ColumnName="FAddress" />
+                <ScalarProperty Name="FQualification" ColumnName="FQualification" />
+                <ScalarProperty Name="FExp" ColumnName="FExp" />
+                <ScalarProperty Name="FSkills" ColumnName="FSkills" />
+                <ScalarProperty Name="FPhoto" ColumnName="FPhoto" />
+                <ScalarProperty Name="FResume" ColumnName="FResume" />
+                <ScalarProperty Name="DRemarks" ColumnName="DRemarks" />
+                <ScalarProperty Name="DDate" ColumnName="DDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_Client_Insert" FunctionName="MVC_ProjectModel.Store.sp_Client_Insert" />
           <FunctionImportMapping FunctionImportName="SP_CountAppliedFreelanceWithID" FunctionName="MVC_ProjectModel.Store.SP_CountAppliedFreelanceWithID" />
           <FunctionImportMapping FunctionImportName="sp_Freelancer_Insert" FunctionName="MVC_ProjectModel.Store.sp_Freelancer_Insert" />

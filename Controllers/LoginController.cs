@@ -26,7 +26,7 @@ namespace MVC_Project_Freelance.Controllers
                     var it = dob.sp_LoginRole(cob.LUsername, cob.LPassword).First();
                     if (it == "Client")
                     {
-                        return RedirectToAction("ClientHomePage", "ClientHome");
+                        return RedirectToAction("ViewApplicants", "ClientHomeApplication");
                     }
                     else if (it == "Freelancer")
                     {

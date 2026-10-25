@@ -27,11 +27,46 @@ namespace MVC_Project_Freelance
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Application_Decision> Application_Decision { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Freelancer> Freelancers { get; set; }
         public virtual DbSet<Login> Logins { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<Project_Application> Project_Application { get; set; }
+    
+        public virtual int sp_Application_Decide(Nullable<int> a_Id, Nullable<int> cId, string decision, string remarks, ObjectParameter oStatus)
+        {
+            var a_IdParameter = a_Id.HasValue ?
+                new ObjectParameter("A_Id", a_Id) :
+                new ObjectParameter("A_Id", typeof(int));
+    
+            var cIdParameter = cId.HasValue ?
+                new ObjectParameter("CId", cId) :
+                new ObjectParameter("CId", typeof(int));
+    
+            var decisionParameter = decision != null ?
+                new ObjectParameter("Decision", decision) :
+                new ObjectParameter("Decision", typeof(string));
+    
+            var remarksParameter = remarks != null ?
+                new ObjectParameter("Remarks", remarks) :
+                new ObjectParameter("Remarks", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_Application_Decide", a_IdParameter, cIdParameter, decisionParameter, remarksParameter, oStatus);
+        }
+    
+        public virtual ObjectResult<sp_Client_GetApplications_Result> sp_Client_GetApplications(Nullable<int> cId, Nullable<int> status)
+        {
+            var cIdParameter = cId.HasValue ?
+                new ObjectParameter("CId", cId) :
+                new ObjectParameter("CId", typeof(int));
+    
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("Status", status) :
+                new ObjectParameter("Status", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Client_GetApplications_Result>("sp_Client_GetApplications", cIdParameter, statusParameter);
+        }
     
         public virtual int sp_Client_Insert(Nullable<int> cId, string cName, string cPhone, string cEmail, string cAddress, string cCompany_Name, string cC_Description, string cPhoto, string cStatus, ObjectParameter oStatus)
         {

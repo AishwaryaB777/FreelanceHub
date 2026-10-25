@@ -1,0 +1,135 @@
+﻿@model MVC_Project_Freelance.Models.ClientApplicantsPageView
+@{
+    ViewBag.Title = "Applicants";
+}
+
+<div style="display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:15px;
+            margin-bottom:20px;">
+
+    <h2 style="margin:0;">
+        Pending Applications (@Model.PendingCount)
+    </h2>
+
+
+    <a href="@Url.Action("ClientPage", "ClientProjectAdding")"
+       class="btn btn-primary"
+       style="padding:10px 18px;
+              border-radius:6px;
+              text-decoration:none;
+              font-weight:bold;">
+        + Add New Project
+    </a>
+
+</div>
+
+<div style="margin-bottom:20px;">
+    <a href="@Url.Action("History", "ClientHomeApplication")">
+        View accepted / rejected history
+    </a>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Msg))
+{
+    <div class="alert @(Model.MsgType == "success"
+                         ? "alert-success"
+                         : "alert-danger")">
+        @Model.Msg
+    </div>
+}
+
+@if (Model.Applicants == null || !Model.Applicants.Any())
+{
+    <div class="alert alert-info">
+        No pending applications right now.
+    </div>
+}
+
+@if (Model.Applicants != null)
+{
+    foreach (var a in Model.Applicants)
+    {
+        <div class="card"
+             style="border:1px solid #ccc;
+                    padding:15px;
+                    margin:15px 0;
+                    border-radius:8px;">
+
+            <h4>
+                @a.FName
+                <small>
+                    applied for <b>@a.PTitle</b>
+                </small>
+            </h4>
+
+            <p>
+                <b>Email:</b> @a.FEmail
+                &nbsp;
+                <b>Phone:</b> @a.FPhone
+                <br />
+
+                <b>Qualification:</b> @a.FQualification
+                &nbsp;
+                <b>Experience:</b> @a.FExp yrs
+                <br />
+
+                <b>Skills:</b> @a.FSkills
+                <br />
+
+                <b>Project budget:</b> @a.PBudget
+                &nbsp;
+                <b>Expected amount:</b> @a.AExpected_Amount
+                <br />
+
+                <b>Proposal:</b> @a.AProposal
+                <br />
+
+                <b>Applied on:</b>
+                @a.ADate.ToString("dd MMM yyyy")
+            </p>
+
+            @using (Html.BeginForm(
+                "Decide",
+                "ClientHomeApplication",
+                FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       name="A_Id"
+                       value="@a.A_Id" />
+
+                <input type="text"
+                       name="remarks"
+                       maxlength="250"
+                       placeholder="Remarks (optional)"
+                       style="width:60%;
+                              max-width:400px;
+                              padding:8px;
+                              border:1px solid #ccc;
+                              border-radius:4px;" />
+
+                <br />
+                <br />
+
+                <button type="submit"
+                        name="decision"
+                        value="Accepted"
+                        class="btn btn-success">
+                    Accept
+                </button>
+
+                <button type="submit"
+                        name="decision"
+                        value="Rejected"
+                        class="btn btn-danger"
+                        onclick="return confirm('Reject this applicant?');">
+                    Reject
+                </button>
+            }
+        </div>
+    }
+}
